@@ -24,6 +24,7 @@ jobs:
           command: |
             cd nest-be-test
             git checkout master
+            git pull origin master
           host: 13.127.183.100
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
