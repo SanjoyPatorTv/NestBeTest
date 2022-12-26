@@ -12,6 +12,6 @@ export class AppController {
 
   @Get('test')
   sayTest(): string {
-    return 'Testtttttttttt! 01';
+    return 'Testtttttttttt! 02';
   }
 }
