@@ -22,7 +22,12 @@ jobs:
         uses: fifsky/ssh-action@v0.0.6
         with:
           command: |
-            mkdir distest
+            cd nest-be-test/
+            git checkout master
+            git pull origin master
+            git add .
+            git commit -m "Automated commit through CICD"
+            git push origin master
           host: 13.127.183.100
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
