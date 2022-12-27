@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master
-  # pull_request:
-  #   branches:
-  #     - "master"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,10 +17,46 @@ jobs:
       - run: |
           npm ci -f
           CI=false npm run build --if-present
-      - name: Making a new folder to test integration
+
+      - name: removing prev build directory from server
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: mkdir testFolderBackend
+          command: rm -rf dist
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
+      - name: transfer file using ssh
+        uses: easingthemes/ssh-deploy@v3.0.1
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
+          ARGS: "-rltDzvO"
+          SOURCE: "dist"
+          REMOTE_HOST: 3.111.149.236
+          REMOTE_USER: ubuntu
+          TARGET: /home/ubuntu/
+          EXCLUDE: "README.md, .gitignore, .github"
+
+      - name: updating directories in the server
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: |
+            rm -rf backend_old
+            mv backend backend_old
+            mv dist backend
+            mkdir dist
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
+      - name: restarting the backend again with pm2
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: |
+            cd backend
+            pm2 stop backendpm2
+            pm2 start main.js --name backendpm2
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
