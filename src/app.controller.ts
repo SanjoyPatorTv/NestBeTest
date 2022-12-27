@@ -7,11 +7,13 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    console.log('main route called');
     return this.appService.getHello();
   }
 
   @Get('test')
   sayTest(): string {
+    console.log('test route called');
     return 'Testtttttttttt! 02';
   }
 }

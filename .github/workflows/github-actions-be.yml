@@ -17,15 +17,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-
-      - name: updating directories in the server
+      - run: |
+          npm ci -f
+          CI=false npm run build --if-present
+      - name: Making a new folder to test integration
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: |
-            cd nest-be-test
-            git checkout master
-            git pull origin master
-          host: 13.127.183.100
+          command: mkdir testFolderBackend
+          host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
