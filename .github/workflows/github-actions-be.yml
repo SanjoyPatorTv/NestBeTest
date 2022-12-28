@@ -82,23 +82,7 @@ jobs:
       - name: creating folder
         uses: fifsky/ssh-action@v0.0.6
         with:
-          run: mkdir maka
-          host: 3.111.149.236
-          user: ubuntu
-          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: install node packages
-        uses: fifsky/ssh-action@v0.0.6
-        with:
-          run: npm install
-          host: 3.111.149.236
-          user: ubuntu
-          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: restart pm2 for backend
-        uses: fifsky/ssh-action@v0.0.6
-        with:
-          run: pm2 restart backendpm2
+          command: mkdir maka
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
