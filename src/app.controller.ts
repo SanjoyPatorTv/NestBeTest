@@ -22,4 +22,10 @@ export class AppController {
     console.log('healthy check route');
     return 'healthy wealthy';
   }
+
+  @Get('name')
+  serverName(): string {
+    console.log('server route');
+    return 'server name is : hrms backend';
+  }
 }
