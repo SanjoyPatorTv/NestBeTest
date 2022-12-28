@@ -64,7 +64,6 @@ jobs:
         uses: fifsky/ssh-action@v0.0.6
         with:
           command: |
-            - run: pm2 list #check pm2 list
             mv package.json backend
             cd backend
             pwd
@@ -83,9 +82,7 @@ jobs:
       - name: install node packages
         uses: fifsky/ssh-action@v0.0.6
         with:
-          run: |
-            pwd
-            npm install
+          run: npm install
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
