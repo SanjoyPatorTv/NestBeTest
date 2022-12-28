@@ -96,6 +96,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
+            mkdir maka1
             cd backend
             npm install
 
