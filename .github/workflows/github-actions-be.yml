@@ -90,22 +90,26 @@ jobs:
       - name: install node packages
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: |
-            cd backend
-            npm install
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd backend
+            npm install
 
       - name: restart pm2 for backend
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: |
-            cd backend
-            pm2 stop backendpm2
-            pm2 start main.js --name backendpm2
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd backend
+            pm2 stop backendpm2
+            pm2 start main.js --name backendpm2
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
