@@ -31,6 +31,7 @@ export class AppController {
 
   @Get('user')
   sendUser(): object[] {
+    console.log(`user route`);
     const user = [
       {
         name: `John Doe`,
