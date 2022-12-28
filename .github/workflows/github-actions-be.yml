@@ -79,10 +79,10 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
-      - name: know pwd
+      - name: creating folder
         uses: fifsky/ssh-action@v0.0.6
         with:
-          run: pwd
+          run: mkdir maka
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
