@@ -87,4 +87,20 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
+      - name: install node packages
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: npm install
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
+      - name: restart pm2 for backend
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: pm2 restart backendpm2
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
