@@ -16,4 +16,10 @@ export class AppController {
     console.log('test route called');
     return 'Testtttttttttt! 02';
   }
+
+  @Get('/api/health')
+  checkHealth(): string {
+    console.log('healthy check route');
+    return 'healthy wealthy';
+  }
 }

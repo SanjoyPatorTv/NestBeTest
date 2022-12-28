@@ -66,8 +66,7 @@ jobs:
           command: |
             mv package.json backend
             cd backend
-            pwd  
-            npm install
+            pwd
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
