@@ -115,3 +115,25 @@ curl -v http://localhost:3001
 
  cd
 
+````````````````````````````````````````
+
+      - name: get node version
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          run: node -v
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
+``````````````````````````````````````````````
+
+      - name: restarting the backend again with pm2
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: |
+            pm2 stop backendpm2
+            pm2 start main.js --name backendpm2
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
