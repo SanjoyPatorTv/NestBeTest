@@ -1,5 +1,5 @@
 name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: ${{ github.actor }} is testing out GitHub Actions for Nest backend🚀
 on:
   push:
     branches:
@@ -26,7 +26,18 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
-      - name: transfer file using ssh
+      - name: transfer package.json file using ssh
+        uses: easingthemes/ssh-deploy@v3.0.1
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
+          ARGS: "-rltDzvO"
+          SOURCE: "package.json"
+          REMOTE_HOST: 3.111.149.236
+          REMOTE_USER: ubuntu
+          TARGET: /home/ubuntu/
+          EXCLUDE: "README.md, .gitignore, .github"
+
+      - name: transfer dist build folder using ssh
         uses: easingthemes/ssh-deploy@v3.0.1
         with:
           SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
@@ -49,11 +60,21 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
+      - name: moving the package.json to backend and installing packages
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: |
+            mv package.json backend
+            cd backend
+            npm install
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
       - name: restarting the backend again with pm2
         uses: fifsky/ssh-action@v0.0.6
         with:
           command: |
-            cd backend
             pm2 stop backendpm2
             pm2 start main.js --name backendpm2
           host: 3.111.149.236
