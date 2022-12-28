@@ -28,4 +28,19 @@ export class AppController {
     console.log('server route');
     return 'server name is : hrms backend';
   }
+
+  @Get('user')
+  sendUser(): object[] {
+    const user = [
+      {
+        name: `John Doe`,
+        age: 23,
+      },
+      {
+        name: 'Jane Doe',
+        age: 23,
+      },
+    ];
+    return user;
+  }
 }

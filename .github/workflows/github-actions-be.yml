@@ -91,7 +91,6 @@ jobs:
         uses: fifsky/ssh-action@v0.0.6
         with:
           command: |
-            mkdir maka1
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd backend
