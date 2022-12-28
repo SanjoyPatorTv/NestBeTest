@@ -80,4 +80,14 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
+      - name: install node packages
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          run: |
+            pwd
+            npm install
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
