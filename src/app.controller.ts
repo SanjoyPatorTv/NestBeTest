@@ -45,6 +45,10 @@ export class AppController {
         name: 'Biswaroop Tate',
         age: 69,
       },
+      {
+        name: 'sanjoy Tate',
+        age: 100,
+      },
     ];
     return user;
   }
