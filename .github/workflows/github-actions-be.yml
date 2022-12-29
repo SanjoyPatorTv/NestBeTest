@@ -48,6 +48,17 @@ jobs:
           TARGET: /home/ubuntu/
           EXCLUDE: "README.md, .gitignore, .github"
 
+      - name: transfer complete repo to testBECompleteFolder folder using ssh
+        uses: easingthemes/ssh-deploy@v3.0.1
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
+          ARGS: "-rltDzvO"
+          SOURCE: "/"
+          REMOTE_HOST: 3.111.149.236
+          REMOTE_USER: ubuntu
+          TARGET: /home/ubuntu/testBECompleteFolder
+          EXCLUDE: "README.md, .gitignore, src, .github"
+
       - name: updating directories in the server
         uses: fifsky/ssh-action@v0.0.6
         with:
@@ -67,22 +78,6 @@ jobs:
             mv package.json backend
             cd backend
             pwd
-          host: 3.111.149.236
-          user: ubuntu
-          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: get node version
-        uses: fifsky/ssh-action@v0.0.6
-        with:
-          run: node -v
-          host: 3.111.149.236
-          user: ubuntu
-          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: who am i
-        uses: fifsky/ssh-action@v0.0.6
-        with:
-          command: whoami
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
