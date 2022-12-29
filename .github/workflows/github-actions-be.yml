@@ -37,7 +37,7 @@ jobs:
           REMOTE_HOST: 3.111.149.236
           REMOTE_USER: ubuntu
           TARGET: /home/ubuntu/tempBE
-          EXCLUDE: "src, node_modules,README.md, .gitignore, .github"
+          EXCLUDE: "src, node_modules,README.md, .gitignore,tsconfig.json, .github "
 
       - name: updating directories in the server
         uses: fifsky/ssh-action@v0.0.6
