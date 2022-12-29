@@ -50,6 +50,18 @@ jobs:
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
 
+      - name: copying .env files to the main folder
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          command: |
+            cp env/dev/.env ./backend/
+            cd env/dev/
+            pwd
+            cat .env
+          host: 3.111.149.236
+          user: ubuntu
+          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
+
       - name: install node packages
         uses: fifsky/ssh-action@v0.0.6
         with:
