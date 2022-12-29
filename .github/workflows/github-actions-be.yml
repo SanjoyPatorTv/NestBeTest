@@ -18,35 +18,15 @@ jobs:
           npm ci -f
           CI=false npm run build --if-present
 
-      - name: removing prev build directory from server
+      - name: removing prev backend from tempBE directory and creating empty folder again in server
         uses: fifsky/ssh-action@v0.0.6
         with:
-          command: rm -rf dist
+          command: |
+            rm -rf tempBE
+            mkdir tempBE
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: transfer package.json file using ssh
-        uses: easingthemes/ssh-deploy@v3.0.1
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
-          ARGS: "-rltDzvO"
-          SOURCE: "package.json"
-          REMOTE_HOST: 3.111.149.236
-          REMOTE_USER: ubuntu
-          TARGET: /home/ubuntu/
-          EXCLUDE: "README.md, .gitignore, .github"
-
-      - name: transfer dist build folder using ssh
-        uses: easingthemes/ssh-deploy@v3.0.1
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_MOTOR_PRIVATE }}
-          ARGS: "-rltDzvO"
-          SOURCE: "dist"
-          REMOTE_HOST: 3.111.149.236
-          REMOTE_USER: ubuntu
-          TARGET: /home/ubuntu/
-          EXCLUDE: "README.md, .gitignore, .github"
 
       - name: transfer complete repo to testBECompleteFolder folder using ssh
         uses: easingthemes/ssh-deploy@v3.0.1
@@ -56,8 +36,8 @@ jobs:
           SOURCE: "/"
           REMOTE_HOST: 3.111.149.236
           REMOTE_USER: ubuntu
-          TARGET: /home/ubuntu/testBECompleteFolder
-          EXCLUDE: "README.md, .gitignore, src, .github"
+          TARGET: /home/ubuntu/tempBE
+          EXCLUDE: "src, node_modules,README.md, .gitignore, .github"
 
       - name: updating directories in the server
         uses: fifsky/ssh-action@v0.0.6
@@ -65,19 +45,7 @@ jobs:
           command: |
             rm -rf backend_old
             mv backend backend_old
-            mv dist backend
-            mkdir dist
-          host: 3.111.149.236
-          user: ubuntu
-          key: ${{ secrets.AWS_MOTOR_PRIVATE }}
-
-      - name: moving the package.json to backend and installing packages
-        uses: fifsky/ssh-action@v0.0.6
-        with:
-          command: |
-            mv package.json backend
-            cd backend
-            pwd
+            mv tempBE backend
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
@@ -89,7 +57,7 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd backend
-            npm install
+            npm install --legacy-peer-deps
           host: 3.111.149.236
           user: ubuntu
           key: ${{ secrets.AWS_MOTOR_PRIVATE }}
@@ -100,7 +68,7 @@ jobs:
           command: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd backend
+            cd backend/dist
             pm2 stop backendpm2
             pm2 start main.js --name backendpm2
           host: 3.111.149.236
